@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.Bambusa.Teleops;
+package org.firstinspires.ftc.teamcode.Bambusa.TeleOps;
 
 import com.qualcomm.hardware.lynx.LynxModule;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
@@ -23,7 +23,7 @@ public class Tele extends OpMode {
 
         // Robot
         robot = new Robot(hardwareMap);
-        robot.init();
+        robot.init(telemetry);
 
         // Enable manual bulk caching
         hubs = hardwareMap.getAll(LynxModule.class);
@@ -39,5 +39,11 @@ public class Tele extends OpMode {
 
         // Running the robot
         robot.run(telemetry, controls);
+    }
+
+    @Override
+    public void stop() {
+        // Stopping the robot
+        robot.stop(telemetry);
     }
 }

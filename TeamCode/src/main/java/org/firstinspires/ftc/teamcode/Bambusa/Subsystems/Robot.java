@@ -5,31 +5,36 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.Bambusa.Settings.Settings;
 
 public class Robot {
-    public Launcher turret;
+    public Launcher launcher;
     public Drive drive;
     public Fairwater fairwater;
     public Conveyor conveyor;
 
     public Robot(HardwareMap hardwareMap) {
-        drive = Settings.SYSTEM.useDriving ? new Drive(hardwareMap) : null;
-        conveyor = Settings.SYSTEM.useConveyor ? new Conveyor(hardwareMap) : null;
-        fairwater = Settings.SYSTEM.useFairwater ? new Fairwater(hardwareMap) : null;
-        turret = Settings.SYSTEM.useTurret ? new Launcher(hardwareMap) : null;
+        drive       = Settings.SYSTEM.useDrive      ? new Drive(hardwareMap)        : new Drive();
+        conveyor    = Settings.SYSTEM.useConveyor   ? new Conveyor(hardwareMap)     : new Conveyor();
+        launcher    = Settings.SYSTEM.useLauncher   ? new Launcher(hardwareMap)     : new Launcher();
+        fairwater   = Settings.SYSTEM.useFairwater  ? new Fairwater(hardwareMap)    : new Fairwater();
     }
 
-    public void init() {
-        // Initializing robot subsystems
-        if (drive != null) drive.init();
-        if (conveyor != null) conveyor.init();
-        if (turret != null) turret.init();
-        if (fairwater != null) fairwater.init();
+    public void init(Telemetry telemetry) {
+        drive.init(telemetry);
+        conveyor.init(telemetry);
+        launcher.init(telemetry);
+        fairwater.init(/*no hardware yet*/);
     }
 
     public void run(Telemetry telemetry, Controls controls) {
-        // Running subsystems
-        if (drive != null) drive.run(telemetry, controls);
-        if (conveyor != null) conveyor.run(telemetry, controls);
-        if (turret != null) turret.run(telemetry, controls);
-        if (fairwater != null) fairwater.run(telemetry, controls);
+        drive.run(telemetry, controls);
+        conveyor.run(telemetry, controls);
+        launcher.run(telemetry, controls);
+        fairwater.run(telemetry, controls);
+    }
+
+    public void stop(Telemetry telemetry) {
+        drive.stop();
+        conveyor.stop();
+        launcher.stop();
+        fairwater.stop();
     }
 }

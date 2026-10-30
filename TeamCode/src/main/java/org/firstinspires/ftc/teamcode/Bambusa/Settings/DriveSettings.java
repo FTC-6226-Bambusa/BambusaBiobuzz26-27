@@ -3,9 +3,9 @@ package org.firstinspires.ftc.teamcode.Bambusa.Settings;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
 public class DriveSettings {
-    public HardwareMapSettings NAMES = new HardwareMapSettings();
-    public SpeedSettings SPEED = new SpeedSettings();
-    public DirectionSettings DIRECTIONS = new DirectionSettings();
+    public HardwareMapSettings  NAMES       = new HardwareMapSettings();
+    public SpeedSettings        SPEED       = new SpeedSettings();
+    public DirectionSettings    DIRECTIONS  = new DirectionSettings();
 
     public static class HardwareMapSettings {
         public String FL = "leftFront";

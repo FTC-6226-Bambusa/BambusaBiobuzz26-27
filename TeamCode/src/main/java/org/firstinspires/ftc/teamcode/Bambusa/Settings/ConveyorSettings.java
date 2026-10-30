@@ -3,14 +3,14 @@ package org.firstinspires.ftc.teamcode.Bambusa.Settings;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
 public class ConveyorSettings {
-    public HardwareMapSettings NAMES = new HardwareMapSettings();
-    public DirectionSettings DIRECTIONS = new DirectionSettings();
-    public SpeedSettings SPEED = new SpeedSettings();
+    public HardwareMapSettings  NAMES       = new HardwareMapSettings();
+    public DirectionSettings    DIRECTIONS  = new DirectionSettings();
+    public SpeedSettings        SPEED       = new SpeedSettings();
 
     public static class HardwareMapSettings {
         public String in1 = "intake1";
         public String in2 = "intake2";
-        public String out = "outtake";
+        public String out = "takeout";
     }
 
     public static class DirectionSettings {
@@ -21,6 +21,6 @@ public class ConveyorSettings {
 
     public static class SpeedSettings {
         public double normal = 0.8;
-        public double outtake = 1;
+        public double takeout = 1;
     }
 }

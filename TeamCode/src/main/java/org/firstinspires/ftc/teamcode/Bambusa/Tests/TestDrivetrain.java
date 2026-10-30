@@ -7,7 +7,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.teamcode.Bambusa.Settings.Settings;
 
-@TeleOp(name = "Test Drive Train")
+@TeleOp(name = "Test Drive Train", group = "Testing")
 @Configurable
 public class TestDrivetrain extends OpMode {
     public DcMotor FL, FR, BL, BR;

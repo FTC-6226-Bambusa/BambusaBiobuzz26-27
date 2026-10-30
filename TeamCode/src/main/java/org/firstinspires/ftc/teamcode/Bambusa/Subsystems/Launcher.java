@@ -4,14 +4,15 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
+import org.firstinspires.ftc.teamcode.Bambusa.Helpers.PIDF;
 import org.firstinspires.ftc.teamcode.Bambusa.Helpers.TelemetryPlus;
 import org.firstinspires.ftc.teamcode.Bambusa.Settings.Settings;
 
 public class Launcher {
     // Both launcher motors
-    DcMotorEx left, right;
-    PIDF leftPIDF, rightPIDF;
-    boolean disconnected = false;
+    private DcMotorEx left, right;
+    private PIDF leftPIDF, rightPIDF;
+    private boolean enabled = true;
 
     public Launcher(HardwareMap hardwareMap) {
         // Getting launcher motors safely
@@ -19,10 +20,24 @@ public class Launcher {
         right = hardwareMap.tryGet(DcMotorEx.class, Settings.LAUNCHER.NAMES.RIGHT_MOTOR);
     }
 
-    public void init() {
-        // Motor is disconnected so kill launcher without giving the rest of the robot a stroke
+    // Null case
+    public Launcher() {
+        enabled = false;
+    }
+
+    public void init(Telemetry telemetry) {
+        if (!enabled) return;
+
+        if (Settings.DEBUG.LAUNCHER.debugConnection) {
+            telemetry.addLine(TelemetryPlus.title("LAUNCHER | CONNECTION"));
+            telemetry.addData("LEFT: ", left != null);
+            telemetry.addData("RIGHT: ", right != null);
+            telemetry.addLine(TelemetryPlus.separator());
+        }
+
+        // Motor is disconnected to kill launcher without giving the rest of the robot a stroke
         if (left == null || right == null) {
-            disconnected = true;
+            enabled = false;
             return;
         }
 
@@ -41,31 +56,37 @@ public class Launcher {
     }
 
     public void run(Telemetry telemetry, Controls controls) {
-        if (disconnected) return;
+        if (!enabled) return;
 
         // Automatically enables
         enable(telemetry);
     }
 
-    public void enable(Telemetry telemetry) {
+    public void stop() {
+        if (!enabled) return;
+        disable();
+    }
+
+    // Utilities
+    private void enable(Telemetry telemetry) {
         // Applying power
         double leftPower = leftPIDF.setVelocity(Settings.LAUNCHER.SPEED.normal);
         double rightPower = rightPIDF.setVelocity(Settings.LAUNCHER.SPEED.normal);
 
         // Debugging
-        boolean showPower = Settings.DEBUG.TURRET.displayPower;
-        boolean showVelocity = Settings.DEBUG.TURRET.displayVelocity;
+        boolean displayPower = Settings.DEBUG.LAUNCHER.displayPower;
+        boolean displayVelocity = Settings.DEBUG.LAUNCHER.displayVelocity;
 
-        if (!showPower && !showVelocity) return;
+        if (!displayPower && !displayVelocity) return;
 
         telemetry.addLine(TelemetryPlus.title("LAUNCHER"));
 
-        if (showPower) {
+        if (displayPower) {
             telemetry.addData("Left Power: ", leftPower);
             telemetry.addData("Right Power: ", rightPower);
         }
 
-        if (showVelocity) {
+        if (displayVelocity) {
             telemetry.addData("Left Velocity: ", left.getVelocity());
             telemetry.addData("Right Velocity: ", right.getVelocity());
         }
@@ -73,7 +94,7 @@ public class Launcher {
         telemetry.addLine(TelemetryPlus.separator());
     }
 
-    public void disable() {
+    private void disable() {
         leftPIDF.setVelocity(0);
         rightPIDF.setVelocity(0);
     }

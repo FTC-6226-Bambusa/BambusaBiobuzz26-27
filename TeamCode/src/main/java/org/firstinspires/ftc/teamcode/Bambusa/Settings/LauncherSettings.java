@@ -3,14 +3,14 @@ package org.firstinspires.ftc.teamcode.Bambusa.Settings;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
 public class LauncherSettings {
-    public HardwareMapSettings NAMES = new HardwareMapSettings();
-    public DirectionSettings DIRECTIONS = new DirectionSettings();
-    public SpeedSettings SPEED = new SpeedSettings();
-    public PIDFSettings PIDF = new PIDFSettings();
+    public HardwareMapSettings  NAMES       = new HardwareMapSettings();
+    public DirectionSettings    DIRECTIONS  = new DirectionSettings();
+    public SpeedSettings        SPEED       = new SpeedSettings();
+    public PIDFSettings         PIDF        = new PIDFSettings();
 
     public static class HardwareMapSettings {
-        public String LEFT_MOTOR = "turretLeft";
-        public String RIGHT_MOTOR = "turretRight";
+        public String LEFT_MOTOR = "launcherLeft";
+        public String RIGHT_MOTOR = "launcherRight";
     }
 
     public static class DirectionSettings {

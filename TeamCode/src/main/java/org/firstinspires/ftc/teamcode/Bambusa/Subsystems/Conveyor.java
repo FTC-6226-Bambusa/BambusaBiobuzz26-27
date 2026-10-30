@@ -9,8 +9,8 @@ import org.firstinspires.ftc.teamcode.Bambusa.Helpers.TelemetryPlus;
 import org.firstinspires.ftc.teamcode.Bambusa.Settings.Settings;
 
 public class Conveyor {
-    public DcMotorEx in1, in2, out;
-    private boolean disconnected = false;
+    private DcMotorEx in1, in2, out;
+    private boolean enabled = true;
 
     public Conveyor(HardwareMap hardwareMap) {
         in1 = hardwareMap.tryGet(DcMotorEx.class, Settings.CONVEYOR.NAMES.in1);
@@ -18,10 +18,25 @@ public class Conveyor {
         out = hardwareMap.tryGet(DcMotorEx.class, Settings.CONVEYOR.NAMES.out);
     }
 
-    public void init() {
-        // Checking if any motors are disconnected
+    // Null case
+    public Conveyor() {
+        enabled = false;
+    }
+
+    public void init(Telemetry telemetry) {
+        if (!enabled) return;
+
+        if (Settings.DEBUG.CONVEYOR.debugConnection) {
+            telemetry.addLine(TelemetryPlus.title("CONVEYOR | CONNECTION"));
+            telemetry.addData("IN 1: ", in1 != null);
+            telemetry.addData("IN 2: ", in2 != null);
+            telemetry.addData("OUT: ", out != null);
+            telemetry.addLine(TelemetryPlus.separator());
+        }
+
+        // Verifying functionality
         if (in1 == null || in2 == null || out == null) {
-            disconnected = true;
+            enabled = false;
             return;
         }
 
@@ -32,22 +47,30 @@ public class Conveyor {
     }
 
     public void run(Telemetry telemetry, Controls controls) {
-        if (disconnected) return;
+        if (!enabled) return;
 
         // Automatically intakes
         in1.setPower(Settings.CONVEYOR.SPEED.normal);
         in2.setPower(Settings.CONVEYOR.SPEED.normal);
 
         // Pushes pollen or nectar into turret
-        out.setPower(controls.shoot() ? Settings.CONVEYOR.SPEED.outtake : 0);
+        out.setPower(controls.shoot() ? Settings.CONVEYOR.SPEED.takeout : 0);
 
         // Debugging
-        if (Settings.DEBUG.POWER.debugConveyorPowerConsumption) {
+        if (Settings.DEBUG.CONVEYOR.displayPower) {
             telemetry.addLine(TelemetryPlus.title("CONVEYOR POWER CONSUMPTION"));
             telemetry.addData("Intake 1: ", in1.getCurrent(CurrentUnit.AMPS));
             telemetry.addData("Intake 2: ", in2.getCurrent(CurrentUnit.AMPS));
-            telemetry.addData("Outtake: ", out.getCurrent(CurrentUnit.AMPS));
+            telemetry.addData("Takeout: ", out.getCurrent(CurrentUnit.AMPS));
             telemetry.addLine(TelemetryPlus.separator());
         }
+    }
+
+    public void stop() {
+        if (!enabled) return;
+
+        in1.setPower(0);
+        in2.setPower(0);
+        out.setPower(0);
     }
 }

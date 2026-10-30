@@ -27,7 +27,7 @@ public class Controls {
     }
 
     public double boost() {
-        return g1.left_trigger;
+        return g1.right_trigger;
     }
 
     public boolean resetYaw() {

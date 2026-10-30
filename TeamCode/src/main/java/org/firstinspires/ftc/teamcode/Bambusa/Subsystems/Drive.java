@@ -12,24 +12,47 @@ import org.firstinspires.ftc.teamcode.Bambusa.Helpers.TelemetryPlus;
 import org.firstinspires.ftc.teamcode.Bambusa.Settings.Settings;
 
 public class Drive {
-    private final IMU imu;
-    private final DcMotorEx fl, fr, bl, br;
+    private IMU imu;
+    private DcMotorEx fl, fr, bl, br;
 
     private double headingOffset = 0;
     private boolean enabled = true;
 
     public Drive(HardwareMap hardwareMap) {
         // Wheel motors
-        fl = hardwareMap.get(DcMotorEx.class, Settings.DRIVE.NAMES.FL);
-        bl = hardwareMap.get(DcMotorEx.class, Settings.DRIVE.NAMES.BL);
-        fr = hardwareMap.get(DcMotorEx.class, Settings.DRIVE.NAMES.FR);
-        br = hardwareMap.get(DcMotorEx.class, Settings.DRIVE.NAMES.BR);
+        fl = hardwareMap.tryGet(DcMotorEx.class, Settings.DRIVE.NAMES.FL);
+        bl = hardwareMap.tryGet(DcMotorEx.class, Settings.DRIVE.NAMES.BL);
+        fr = hardwareMap.tryGet(DcMotorEx.class, Settings.DRIVE.NAMES.FR);
+        br = hardwareMap.tryGet(DcMotorEx.class, Settings.DRIVE.NAMES.BR);
 
         // IMU
         imu = hardwareMap.get(IMU.class, Settings.LOCALIZATION.NAMES.IMU);
     }
 
-    public void init() {
+    // Null case
+    public Drive() {
+        enabled = false;
+    }
+
+    public void init(Telemetry telemetry) {
+        if (!enabled) return;
+
+        // Debugging connection
+        if (Settings.DEBUG.DRIVE.debugConnection) {
+            telemetry.addLine(TelemetryPlus.title("DRIVE | CONNECTION"));
+            telemetry.addData("Front Left: ", fl != null);
+            telemetry.addData("Front Right: ", fr != null);
+            telemetry.addData("Back Left: ", bl != null);
+            telemetry.addData("Back Left: ", br != null);
+            telemetry.addLine(TelemetryPlus.separator());
+        }
+
+        // Verifying functionality
+        if (fl == null || fr == null || br == null || bl == null) {
+            enabled = false;
+            return;
+        }
+
         // Setting motor directions
         fl.setDirection(Settings.DRIVE.DIRECTIONS.FL);
         fr.setDirection(Settings.DRIVE.DIRECTIONS.FR);
@@ -81,7 +104,7 @@ public class Drive {
         br.setPower(backRightPower);
 
         // Debugging power consumption
-        if (Settings.DEBUG.POWER.debugDrivePowerConsumption) {
+        if (Settings.DEBUG.DRIVE.debugPowerConsumption) {
             telemetry.addLine(TelemetryPlus.title("DRIVE POWER CONSUMPTION"));
             telemetry.addData("Front Left: ", fl.getCurrent(CurrentUnit.AMPS));
             telemetry.addData("Front Right: ", fr.getCurrent(CurrentUnit.AMPS));
@@ -91,11 +114,12 @@ public class Drive {
         }
     }
 
-    public void disable() {
-        enabled = false;
-    }
+    public void stop() {
+        if (!enabled) return;
 
-    public void enable() {
-        enabled = true;
+        fl.setPower(0);
+        fr.setPower(0);
+        br.setPower(0);
+        bl.setPower(0);
     }
 }

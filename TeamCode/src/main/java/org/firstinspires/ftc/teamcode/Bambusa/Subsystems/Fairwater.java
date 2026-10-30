@@ -5,6 +5,7 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.Bambusa.Helpers.TelemetryPlus;
+import org.firstinspires.ftc.teamcode.Bambusa.Helpers.Waypoints;
 import org.firstinspires.ftc.teamcode.Bambusa.Settings.Settings;
 import org.firstinspires.ftc.teamcode.pedro.Constants;
 
@@ -16,7 +17,14 @@ public class Fairwater {
         this.follower = Constants.create(hardwareMap);
     }
 
+    // Null case
+    public Fairwater() {
+        enabled = false;
+    }
+
     public void init() {
+        if (!enabled) return;
+
         // Initiating world model and waypoint system
         Waypoints.init();
         World.init();
@@ -42,5 +50,12 @@ public class Fairwater {
             telemetry.addData("A: ", follower.pose().heading());
             telemetry.addLine(TelemetryPlus.separator());
         }
+    }
+
+    public void stop() {
+        if (!enabled) return;
+
+        // Currently does nothing.
+        // This would likely store pose or save data.
     }
 }
