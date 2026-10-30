@@ -1,13 +1,11 @@
 package org.firstinspires.ftc.teamcode.Bambusa.Tests;
 
-import com.bylazar.configurables.annotations.Configurable;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.Bambusa.Helpers.USBConnection;
 import org.firstinspires.ftc.teamcode.Bambusa.Settings.Settings;
 
-@Configurable
 @TeleOp(name = "Test USB Connection", group = "Testing")
 public class TestUSBConnection extends OpMode {
 

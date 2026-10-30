@@ -26,7 +26,7 @@ public class Drive {
         br = hardwareMap.tryGet(DcMotorEx.class, Settings.DRIVE.NAMES.BR);
 
         // IMU
-        imu = hardwareMap.get(IMU.class, Settings.LOCALIZATION.NAMES.IMU);
+        imu = hardwareMap.tryGet(IMU.class, Settings.LOCALIZATION.NAMES.IMU);
     }
 
     // Null case
