@@ -1,49 +1,52 @@
 package org.firstinspires.ftc.teamcode.Bambusa.TeleOps;
 
-import com.qualcomm.hardware.lynx.LynxModule;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.Bambusa.Subsystems.Controls;
-import org.firstinspires.ftc.teamcode.Bambusa.Subsystems.Robot;
+import org.firstinspires.ftc.teamcode.Bambusa.Subsystems.Preparation;
+import org.firstinspires.ftc.teamcode.Bambusa.Managers.Robot;
 
-import java.util.List;
+/* TODO:
+    * Get controls to work using json file and web interface
+    * Fix IMU rotation
+ */
 
 @TeleOp(name = "goated teleop")
 public class Tele extends OpMode {
+    Preparation preparation;
     Controls controls;
     Robot robot;
 
-    private List<LynxModule> hubs;
-
     @Override
     public void init() {
+        // Preparation (activated before each OpMode stage)
+        preparation = new Preparation(hardwareMap);
+        preparation.init(telemetry);
+
         // Controls
         controls = new Controls(gamepad1, gamepad2);
 
         // Robot
         robot = new Robot(hardwareMap);
         robot.init(telemetry);
+    }
 
-        // Enable manual bulk caching
-        hubs = hardwareMap.getAll(LynxModule.class);
-        for (LynxModule hub : hubs) {
-            hub.setBulkCachingMode(LynxModule.BulkCachingMode.MANUAL);
-        }
+
+    @Override
+    public void init_loop() {
+        preparation.init_loop(telemetry);
     }
 
     @Override
     public void loop() {
-        // Read hub snapshots
-        for (LynxModule hub : hubs) hub.clearBulkCache();
-
-        // Running the robot
+        preparation.run(telemetry);
         robot.run(telemetry, controls);
     }
 
     @Override
     public void stop() {
-        // Stopping the robot
+        preparation.stop(telemetry);
         robot.stop(telemetry);
     }
 }

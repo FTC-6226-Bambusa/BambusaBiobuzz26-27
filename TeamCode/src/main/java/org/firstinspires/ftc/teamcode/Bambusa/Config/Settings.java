@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.Bambusa.Settings;
+package org.firstinspires.ftc.teamcode.Bambusa.Config;
 
 import com.bylazar.configurables.annotations.Configurable;
 
@@ -11,6 +11,5 @@ public class Settings {
     public static LauncherSettings      LAUNCHER        = new LauncherSettings();
     public static ConveyorSettings      CONVEYOR        = new ConveyorSettings();
     public static LocalizationSettings  LOCALIZATION    = new LocalizationSettings();
-    public static WaypointSettings      WAYPOINTS       = new WaypointSettings();
     public static USBSettings           USB             = new USBSettings();
 }

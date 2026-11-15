@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.Bambusa.Settings;
+package org.firstinspires.ftc.teamcode.Bambusa.Config;
 
 public class DebugSettings {
     public DebugStyle STYLE = new DebugStyle();

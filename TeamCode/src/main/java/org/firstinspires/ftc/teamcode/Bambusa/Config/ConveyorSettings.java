@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.Bambusa.Settings;
+package org.firstinspires.ftc.teamcode.Bambusa.Config;
 
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 

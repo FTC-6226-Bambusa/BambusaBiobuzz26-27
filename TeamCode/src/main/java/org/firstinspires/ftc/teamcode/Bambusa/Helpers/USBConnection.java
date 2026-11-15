@@ -1,6 +1,6 @@
 package org.firstinspires.ftc.teamcode.Bambusa.Helpers;
 
-import org.firstinspires.ftc.teamcode.Bambusa.Settings.Settings;
+import org.firstinspires.ftc.teamcode.Bambusa.Config.Settings;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -93,7 +93,7 @@ public class USBConnection {
 
         out.println(data);
 
-        // Checks if the remote end dconnected
+        // Checks if the remote end disconnected
         if (out.checkError()) disconnect();
     }
 

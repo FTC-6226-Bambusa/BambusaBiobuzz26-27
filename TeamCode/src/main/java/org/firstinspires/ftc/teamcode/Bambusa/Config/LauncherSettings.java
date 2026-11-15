@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.Bambusa.Settings;
+package org.firstinspires.ftc.teamcode.Bambusa.Config;
 
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
@@ -9,13 +9,13 @@ public class LauncherSettings {
     public PIDFSettings         PIDF        = new PIDFSettings();
 
     public static class HardwareMapSettings {
-        public String LEFT_MOTOR = "launcherLeft";
-        public String RIGHT_MOTOR = "launcherRight";
+        public String LEFT_MOTOR = "shootL";
+        public String RIGHT_MOTOR = "shootR";
     }
 
     public static class DirectionSettings {
-        public DcMotorSimple.Direction LEFT_MOTOR = DcMotorSimple.Direction.REVERSE;
-        public DcMotorSimple.Direction RIGHT_MOTOR = DcMotorSimple.Direction.FORWARD;
+        public DcMotorSimple.Direction LEFT_MOTOR = DcMotorSimple.Direction.FORWARD;
+        public DcMotorSimple.Direction RIGHT_MOTOR = DcMotorSimple.Direction.REVERSE;
     }
 
     public static class PIDFSettings {
@@ -28,6 +28,6 @@ public class LauncherSettings {
     public static class SpeedSettings {
         // Temporary single value for speed
         // Later, this should mold to distance from hive
-        public double normal = 0.8;
+        public double normal = 0.325;
     }
 }

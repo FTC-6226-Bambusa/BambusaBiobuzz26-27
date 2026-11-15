@@ -12,17 +12,19 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
+import org.firstinspires.ftc.teamcode.Bambusa.Config.Settings;
+
 import java.util.List;
 
 public class ThreeWheelTuner extends Procedure {
 
-    private static String leftEncoderName = "lf";
-    private static String rightEncoderName = "rr";
-    private static String strafeEncoderName = "lr";
-    private static String frontLeftName = "lf";
-    private static String backLeftName = "lr";
-    private static String frontRightName = "rf";
-    private static String backRightName = "rr";
+    private static String leftEncoderName = Settings.LOCALIZATION.NAMES.LEFT;
+    private static String rightEncoderName = Settings.LOCALIZATION.NAMES.RIGHT;
+    private static String strafeEncoderName = Settings.LOCALIZATION.NAMES.STRAFE;
+    private static String frontLeftName = Settings.DRIVE.NAMES.FL;
+    private static String backLeftName = Settings.DRIVE.NAMES.BL;
+    private static String frontRightName = Settings.DRIVE.NAMES.FR;
+    private static String backRightName = Settings.DRIVE.NAMES.BR;
 
     public ThreeWheelTuner() {
         super("Three Wheel Tuner", "Tune three odometry pods");
@@ -32,13 +34,13 @@ public class ThreeWheelTuner extends Procedure {
     public void run() throws InterruptedException {
         Inputs setup = inputs("Encoder Setup",
                 "Set the motor ports that the three odometry encoders are plugged into.");
-        Inputs.Field<String> leftEncoder = setup.s("Left Encoder Motor Name").withDefault("lf");
-        Inputs.Field<String> rightEncoder = setup.s("Right Encoder Motor Name").withDefault("rr");
-        Inputs.Field<String> strafeEncoder = setup.s("Strafe Encoder Motor Name").withDefault("lr");
-        Inputs.Field<String> frontLeft = setup.s("Front Left Drive Motor Name").withDefault("lf");
-        Inputs.Field<String> backLeft = setup.s("Back Left Drive Motor Name").withDefault("lr");
-        Inputs.Field<String> frontRight = setup.s("Front Right Drive Motor Name").withDefault("rf");
-        Inputs.Field<String> backRight = setup.s("Back Right Drive Motor Name").withDefault("rr");
+        Inputs.Field<String> leftEncoder = setup.s("Left Encoder Motor Name").withDefault(Settings.LOCALIZATION.NAMES.LEFT);
+        Inputs.Field<String> rightEncoder = setup.s("Right Encoder Motor Name").withDefault(Settings.LOCALIZATION.NAMES.RIGHT);
+        Inputs.Field<String> strafeEncoder = setup.s("Strafe Encoder Motor Name").withDefault(Settings.LOCALIZATION.NAMES.STRAFE);
+        Inputs.Field<String> frontLeft = setup.s("Front Left Drive Motor Name").withDefault(Settings.DRIVE.NAMES.FL);
+        Inputs.Field<String> backLeft = setup.s("Back Left Drive Motor Name").withDefault(Settings.DRIVE.NAMES.BL);
+        Inputs.Field<String> frontRight = setup.s("Front Right Drive Motor Name").withDefault(Settings.DRIVE.NAMES.FR);
+        Inputs.Field<String> backRight = setup.s("Back Right Drive Motor Name").withDefault(Settings.DRIVE.NAMES.BR);
         awaitInputs(setup);
         leftEncoderName = leftEncoder.get();
         rightEncoderName = rightEncoder.get();

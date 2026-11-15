@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.Bambusa.Settings;
+package org.firstinspires.ftc.teamcode.Bambusa.Config;
 
 public class USBSettings {
     public PortSettings PORTS = new PortSettings();

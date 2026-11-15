@@ -5,7 +5,7 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
-import org.firstinspires.ftc.teamcode.Bambusa.Settings.Settings;
+import org.firstinspires.ftc.teamcode.Bambusa.Config.Settings;
 
 @TeleOp(name = "Test Drive Train", group = "Testing")
 @Configurable

@@ -6,7 +6,7 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.Bambusa.Helpers.PIDF;
 import org.firstinspires.ftc.teamcode.Bambusa.Helpers.TelemetryPlus;
-import org.firstinspires.ftc.teamcode.Bambusa.Settings.Settings;
+import org.firstinspires.ftc.teamcode.Bambusa.Config.Settings;
 
 public class Launcher {
     // Both launcher motors
@@ -25,15 +25,9 @@ public class Launcher {
         enabled = false;
     }
 
+    // OpMode methods
     public void init(Telemetry telemetry) {
         if (!enabled) return;
-
-        if (Settings.DEBUG.LAUNCHER.debugConnection) {
-            telemetry.addLine(TelemetryPlus.title("LAUNCHER | CONNECTION"));
-            telemetry.addData("LEFT: ", left != null);
-            telemetry.addData("RIGHT: ", right != null);
-            telemetry.addLine(TelemetryPlus.separator());
-        }
 
         // Motor is disconnected to kill launcher without giving the rest of the robot a stroke
         if (left == null || right == null) {
@@ -59,7 +53,10 @@ public class Launcher {
         if (!enabled) return;
 
         // Automatically enables
-        enable(telemetry);
+        // enable(telemetry);
+        double power = controls.shoot() ? Settings.LAUNCHER.SPEED.normal : 0.0;
+        left.setPower(power);
+        right.setPower(power);
     }
 
     public void stop() {
@@ -76,26 +73,34 @@ public class Launcher {
         // Debugging
         boolean displayPower = Settings.DEBUG.LAUNCHER.displayPower;
         boolean displayVelocity = Settings.DEBUG.LAUNCHER.displayVelocity;
-
         if (!displayPower && !displayVelocity) return;
 
         telemetry.addLine(TelemetryPlus.title("LAUNCHER"));
-
-        if (displayPower) {
-            telemetry.addData("Left Power: ", leftPower);
-            telemetry.addData("Right Power: ", rightPower);
-        }
-
-        if (displayVelocity) {
-            telemetry.addData("Left Velocity: ", left.getVelocity());
-            telemetry.addData("Right Velocity: ", right.getVelocity());
-        }
-
+        if (displayPower) debugPower(telemetry);
+        if (displayVelocity) debugVelocity(telemetry);
         telemetry.addLine(TelemetryPlus.separator());
     }
 
     private void disable() {
         leftPIDF.setVelocity(0);
         rightPIDF.setVelocity(0);
+    }
+
+    // Debugging
+    private void debugConnection(Telemetry telemetry) {
+        telemetry.addLine(TelemetryPlus.title("LAUNCHER | CONNECTION"));
+        telemetry.addData("LEFT: ", left != null);
+        telemetry.addData("RIGHT: ", right != null);
+        telemetry.addLine(TelemetryPlus.separator());
+    }
+
+    private void debugPower(Telemetry telemetry) {
+        telemetry.addData("Left Power: ", left.getPower());
+        telemetry.addData("Right Power: ", right.getPower());
+    }
+
+    private void debugVelocity(Telemetry telemetry) {
+        telemetry.addData("Left Velocity: ", left.getVelocity());
+        telemetry.addData("Right Velocity: ", right.getVelocity());
     }
 }

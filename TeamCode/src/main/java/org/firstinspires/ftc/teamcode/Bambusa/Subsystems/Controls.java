@@ -5,12 +5,11 @@ import com.qualcomm.robotcore.hardware.Gamepad;
 
 @Configurable
 public class Controls {
-    public Gamepad g1;
-    public Gamepad g2;
+    public Gamepad g1, g2;
 
-    public Controls(Gamepad gamepad1, Gamepad gamepad2) {
-        g1 = gamepad1;
-        g2 = gamepad2;
+    public Controls(Gamepad g1, Gamepad g2) {
+        this.g1 = g1;
+        this.g2 = g2;
     }
 
     // Driving
@@ -27,7 +26,7 @@ public class Controls {
     }
 
     public double boost() {
-        return g1.right_trigger;
+        return g1.left_trigger;
     }
 
     public boolean resetYaw() {
@@ -36,15 +35,16 @@ public class Controls {
     }
 
     // Conveyor
-    public boolean shoot() {
-        // i dunno ill talk with drivers
+    public boolean takeout() {
         return false;
+    }
+
+    public boolean shoot() {
+        return g1.right_trigger_pressed;
     }
 
     // Fairwater
     public boolean killSentience() {
         return g1.a && g2.a;
     }
-
-    // TODO: Utilize gamepad rumble to signal drivers
 }

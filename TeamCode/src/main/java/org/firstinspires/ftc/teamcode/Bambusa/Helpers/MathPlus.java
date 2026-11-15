@@ -1,6 +1,6 @@
 package org.firstinspires.ftc.teamcode.Bambusa.Helpers;
 
-import org.firstinspires.ftc.teamcode.Bambusa.Settings.Settings;
+import org.firstinspires.ftc.teamcode.Bambusa.Config.Settings;
 
 public class MathPlus {
     // Returns t of the way from a to b

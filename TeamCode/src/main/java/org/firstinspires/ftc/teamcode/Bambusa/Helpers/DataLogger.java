@@ -35,7 +35,7 @@ public class DataLogger {
             writer.newLine();
             writer.close();
         } catch (IOException e) {
-            e.printStackTrace();
+            e.fillInStackTrace();
         }
     }
 }
