@@ -24,12 +24,12 @@ public class Constants {
         c.leftEncoderName.set(Settings.LOCALIZATION.NAMES.LEFT);
         c.rightEncoderName.set(Settings.LOCALIZATION.NAMES.RIGHT);
         c.strafeEncoderName.set(Settings.LOCALIZATION.NAMES.STRAFE);
-        c.leftPodY.set(7.0);
-        c.rightPodY.set(-7.0);
-        c.strafePodX.set(-3.0);
-        c.forwardTicksToInches.set(0.0019893054936661);
-        c.strafeTicksToInches.set(0.0019709870703248);
-        c.turnTicksToRadians.set(.0002761839661398458);
+        c.leftPodY.set(7.4332);
+        c.rightPodY.set(-7.1580);
+        c.strafePodX.set(-3.7284);
+        c.forwardTicksToInches.set(0.00199674760631);
+        c.strafeTicksToInches.set(0.00200631152166);
+        c.turnTicksToRadians.set(0.0020219519116983);
         c.leftEncoderDirection.set(Settings.LOCALIZATION.DIRECTIONS.LEFT);
         c.rightEncoderDirection.set(Settings.LOCALIZATION.DIRECTIONS.RIGHT);
         c.strafeEncoderDirection.set(Settings.LOCALIZATION.DIRECTIONS.STRAFE);

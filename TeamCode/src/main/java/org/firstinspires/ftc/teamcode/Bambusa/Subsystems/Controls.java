@@ -1,9 +1,7 @@
 package org.firstinspires.ftc.teamcode.Bambusa.Subsystems;
 
-import com.bylazar.configurables.annotations.Configurable;
 import com.qualcomm.robotcore.hardware.Gamepad;
 
-@Configurable
 public class Controls {
     public Gamepad g1, g2;
 
@@ -39,12 +37,13 @@ public class Controls {
         return false;
     }
 
+    // Launcher
     public boolean shoot() {
         return g1.right_trigger_pressed;
     }
 
-    // Fairwater
-    public boolean killSentience() {
-        return g1.a && g2.a;
+    // Preparation
+    public boolean switchAlliance() {
+        return g1.aWasPressed() || g2.aWasPressed();
     }
 }

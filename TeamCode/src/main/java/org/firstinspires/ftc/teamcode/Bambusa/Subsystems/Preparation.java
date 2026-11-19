@@ -4,7 +4,9 @@ import com.qualcomm.hardware.lynx.LynxModule;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
+import org.firstinspires.ftc.teamcode.Bambusa.Config.GameSettings;
 import org.firstinspires.ftc.teamcode.Bambusa.Config.Settings;
+import org.firstinspires.ftc.teamcode.Bambusa.Helpers.TelemetryPlus;
 
 import java.util.List;
 
@@ -24,19 +26,25 @@ public class Preparation {
                     : LynxModule.BulkCachingMode.AUTO
             );
         }
+
+        // Displaying alliance
+        showAllianceSelection(telemetry);
     }
 
-    public void init_loop(Telemetry telemetry) {
-        // TODO: Add alliance and position selection
+    public void init_loop(Controls controls) {
+        // Switching alliance
+        if (controls.switchAlliance()) Settings.GAME.alliance = Settings.GAME.alliance.toggle();
     }
 
-    public void run(Telemetry telemetry) {
+    public void run() {
         // Read hub snapshots in bulk if enabled
         if (Settings.SYSTEM.useManualBulkCaching)
             for (LynxModule hub : hubs) hub.clearBulkCache();
     }
 
-    public void stop(Telemetry telemetry) {
-        // This, for example, would store data.
+    private void showAllianceSelection(Telemetry telemetry) {
+        telemetry.addData(TelemetryPlus.title("Alliance Selection"), "").setRetained(true);
+        telemetry.addData("Alliance Selected: ", () -> Settings.GAME.alliance.toString());
+        telemetry.addData(TelemetryPlus.separator(), "").setRetained(true);
     }
 }

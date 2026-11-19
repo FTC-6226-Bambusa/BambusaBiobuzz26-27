@@ -8,11 +8,21 @@ import org.firstinspires.ftc.teamcode.Bambusa.Subsystems.Preparation;
 import org.firstinspires.ftc.teamcode.Bambusa.Managers.Robot;
 
 /* TODO:
-    * Get controls to work using json file and web interface
     * Fix IMU rotation
+    *
+    * Create recorded autonomous which uses inheritance from Gamepad to feed recorded values.
+    *
+    * Add code for the conveyor which accepts servos instead of all DcMotor
+    *
+    * MAYBE: Use battery voltage detection or PID to ensure that the drive maintains the same speed despite voltage.
+    * MAYBE: Set controller colors using gamepad1.setLedColor(r, g, b)
+    *
+
+
+    * When you update something you should only update it in one place!
  */
 
-@TeleOp(name = "goated teleop")
+@TeleOp(name = "goated teleop", group = "TeleOp")
 public class Tele extends OpMode {
     Preparation preparation;
     Controls controls;
@@ -32,21 +42,19 @@ public class Tele extends OpMode {
         robot.init(telemetry);
     }
 
-
     @Override
     public void init_loop() {
-        preparation.init_loop(telemetry);
+        preparation.init_loop(controls);
     }
 
     @Override
     public void loop() {
-        preparation.run(telemetry);
-        robot.run(telemetry, controls);
+        preparation.run();
+        robot.run(controls);
     }
 
     @Override
     public void stop() {
-        preparation.stop(telemetry);
-        robot.stop(telemetry);
+        robot.stop();
     }
 }

@@ -27,7 +27,7 @@ public class PIDF {
         timer.reset();
     }
     
-    public double setVelocity(double target) {
+    public void setVelocity(double target) {
         // Reset integral if target changes or motor is stopped
         if (target != lastTarget || target == 0) {
             integral = 0;
@@ -36,7 +36,7 @@ public class PIDF {
 
         if (target == 0) {
             motor.setPower(0);
-            return 0;
+            return;
         }
 
         double seconds = timer.seconds();
@@ -62,7 +62,6 @@ public class PIDF {
         double power = Range.clip(output, -1.0, 1.0);
         motor.setPower(power);
 
-        return power;
     }
 
     // Resets loop variables

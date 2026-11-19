@@ -12,4 +12,5 @@ public class Settings {
     public static ConveyorSettings      CONVEYOR        = new ConveyorSettings();
     public static LocalizationSettings  LOCALIZATION    = new LocalizationSettings();
     public static USBSettings           USB             = new USBSettings();
+    public static AutoSettings          AUTO            = new AutoSettings();
 }

@@ -3,7 +3,7 @@ package org.firstinspires.ftc.teamcode.Bambusa.Tests;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
-@TeleOp
+@TeleOp(group = "Testing")
 public class TestTelemetry extends OpMode {
     @Override
     public void init() {

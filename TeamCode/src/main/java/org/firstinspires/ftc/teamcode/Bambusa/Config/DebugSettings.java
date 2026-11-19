@@ -11,8 +11,8 @@ public class DebugSettings {
 
 
     public static class DebugStyle {
-        public int separatorLength = 35;
-        public String separatorChar = "*";
+        public int separatorLength = 30;
+        public String separatorChar = "-";
     }
 
     public static class LauncherDebug {

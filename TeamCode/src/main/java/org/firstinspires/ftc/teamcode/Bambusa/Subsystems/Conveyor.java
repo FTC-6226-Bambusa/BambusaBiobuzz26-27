@@ -1,5 +1,14 @@
 package org.firstinspires.ftc.teamcode.Bambusa.Subsystems;
 
+import static com.pedropathing.ivy.commands.Commands.instant;
+import static com.pedropathing.ivy.commands.Commands.waitMs;
+import static com.pedropathing.ivy.groups.Groups.parallel;
+import static com.pedropathing.ivy.groups.Groups.race;
+import static com.pedropathing.ivy.groups.Groups.sequential;
+import static com.pedropathing.ivy.pedro.PedroCommands.hold;
+
+import com.pedropathing.follower.Follower;
+import com.pedropathing.ivy.Command;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
@@ -36,13 +45,16 @@ public class Conveyor {
             return;
         }
 
+        // Debugging
+        if (Settings.DEBUG.CONVEYOR.displayPower) debugPowerConsumption(telemetry);
+
         // Setting directions
         in1.setDirection(Settings.CONVEYOR.DIRECTIONS.in1);
         in2.setDirection(Settings.CONVEYOR.DIRECTIONS.in2);
         out.setDirection(Settings.CONVEYOR.DIRECTIONS.out);
     }
 
-    public void run(Telemetry telemetry, Controls controls) {
+    public void run(Controls controls) {
         if (!enabled) return;
 
         // Automatically intakes
@@ -51,9 +63,6 @@ public class Conveyor {
 
         // Pushes pollen or nectar into turret
         out.setPower(controls.takeout() ? Settings.CONVEYOR.SPEED.takeout : 0);
-
-        // Debugging
-        if (Settings.DEBUG.CONVEYOR.displayPower) debugPowerConsumption(telemetry);
     }
 
     public void stop() {
@@ -64,20 +73,46 @@ public class Conveyor {
         out.setPower(0);
     }
 
+    // Autonomous methods
+    public Command enableCommand() {
+        return instant(() -> {
+            in1.setPower(Settings.CONVEYOR.SPEED.normal);
+            in2.setPower(Settings.CONVEYOR.SPEED.normal);
+        })
+        .requiring(this)
+        .unless(() -> !enabled);
+    }
+
+    public Command takeoutCommand(Follower follower) {
+        return parallel(
+            sequential(
+                instant(() -> out.setPower(Settings.CONVEYOR.SPEED.takeout)),
+                waitMs(Settings.AUTO.takeout_ms),
+                instant(() -> out.setPower(0))
+            ),
+            race(
+                hold(follower),
+                waitMs(Settings.AUTO.takeout_ms)
+            )
+        )
+        .requiring(this)
+        .unless(() -> !enabled);
+    }
+
     // Debugging
     private void debugConnection(Telemetry telemetry) {
-        telemetry.addLine(TelemetryPlus.title("CONVEYOR | CONNECTION"));
-        telemetry.addData("IN 1: ", in1 != null);
-        telemetry.addData("IN 2: ", in2 != null);
-        telemetry.addData("OUT: ", out != null);
-        telemetry.addLine(TelemetryPlus.separator());
+        telemetry.log().add(TelemetryPlus.title("CONVEYOR | CONNECTION"));
+        telemetry.log().add("IN 1: ", in1 != null);
+        telemetry.log().add("IN 2: ", in2 != null);
+        telemetry.log().add("OUT: ", out != null);
+        telemetry.log().add(TelemetryPlus.separator());
     }
 
     private void debugPowerConsumption(Telemetry telemetry) {
-        telemetry.addLine(TelemetryPlus.title("CONVEYOR POWER CONSUMPTION"));
-        telemetry.addData("Intake 1: ", in1.getCurrent(CurrentUnit.AMPS));
-        telemetry.addData("Intake 2: ", in2.getCurrent(CurrentUnit.AMPS));
-        telemetry.addData("Takeout: ", out.getCurrent(CurrentUnit.AMPS));
-        telemetry.addLine(TelemetryPlus.separator());
+        telemetry.addData(TelemetryPlus.title("CONVEYOR POWER CONSUMPTION"), "").setRetained(true);
+        telemetry.addData("Intake 1: ", () -> in1.getCurrent(CurrentUnit.AMPS));
+        telemetry.addData("Intake 2: ", () -> in2.getCurrent(CurrentUnit.AMPS));
+        telemetry.addData("Takeout: ",  () -> out.getCurrent(CurrentUnit.AMPS));
+        telemetry.addData(TelemetryPlus.separator(), "").setRetained(true);
     }
 }

@@ -5,5 +5,13 @@ public class GameSettings {
     public double fieldSize = 12 * 12;
 
     // Alliance
-    public enum ALLIANCES {BLUE, RED}
+    public ALLIANCES alliance = ALLIANCES.BLUE;
+    public enum ALLIANCES {
+        BLUE, RED;
+
+        // Utility
+        public ALLIANCES toggle() {
+            return (this == RED) ? BLUE : RED;
+        }
+    }
 }

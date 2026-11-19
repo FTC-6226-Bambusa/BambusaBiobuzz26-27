@@ -25,13 +25,13 @@ public class Robot {
         launcher.init(telemetry);
     }
 
-    public void run(Telemetry telemetry, Controls controls) {
-        drive.run(telemetry, controls);
-        conveyor.run(telemetry, controls);
-        launcher.run(telemetry, controls);
+    public void run(Controls controls) {
+        drive.run(controls);
+        conveyor.run(controls);
+        launcher.run(controls);
     }
 
-    public void stop(Telemetry telemetry) {
+    public void stop() {
         drive.stop();
         conveyor.stop();
         launcher.stop();

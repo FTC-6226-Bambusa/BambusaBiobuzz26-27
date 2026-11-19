@@ -8,9 +8,9 @@ public class ConveyorSettings {
     public SpeedSettings        SPEED       = new SpeedSettings();
 
     public static class HardwareMapSettings {
-        public String in1 = "intake1";
-        public String in2 = "intake2";
-        public String out = "takeout";
+        public String in1 = "intake";
+        public String in2 = "shootF";
+        public String out = "shootF";
     }
 
     public static class DirectionSettings {

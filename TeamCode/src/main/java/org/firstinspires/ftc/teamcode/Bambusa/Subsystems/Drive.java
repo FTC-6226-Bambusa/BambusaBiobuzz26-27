@@ -48,6 +48,9 @@ public class Drive {
             return;
         }
 
+        // Debugging power consumption
+        if (Settings.DEBUG.DRIVE.debugPowerConsumption) debugPowerConsumption(telemetry);
+
         // Setting motor directions
         fl.setDirection(Settings.DRIVE.DIRECTIONS.FL);
         fr.setDirection(Settings.DRIVE.DIRECTIONS.FR);
@@ -67,34 +70,31 @@ public class Drive {
         }
     }
 
-    public void run(Telemetry telemetry, Controls controls) {
+    public void run(Controls controls) {
         // Disables driving for override
         if (!enabled) return;
 
-        // Both base speeds set to 1.0 for maximum performance
+        // Smooth speed scale
         double finalSpeed = MathPlus.lerp(
-                Settings.DRIVE.SPEED.normalSpeed, // Set to 1.0 in Settings
-                Settings.DRIVE.SPEED.boostSpeed,  // Set to 1.0 in Settings
+                Settings.DRIVE.SPEED.normalSpeed,
+                Settings.DRIVE.SPEED.boostSpeed,
                 controls.boost()
         );
 
         double y  = controls.forward() * finalSpeed;
         double x  = controls.strafe()  * finalSpeed * Settings.DRIVE.SPEED.strafeCorrection;
-        double rx = controls.turn()    * Settings.DRIVE.SPEED.turnSpeed; // Set to 1.0 in Settings
+        double rx = controls.turn()    * Settings.DRIVE.SPEED.turnSpeed;
 
-        // IMU / Heading
+        // IMU
         double rawHeading = imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS);
-
-        // Resets forward direction
         if (controls.resetYaw()) headingOffset = rawHeading;
-
         double botHeading = Settings.SYSTEM.useFieldCentric ? rawHeading - headingOffset : 0;
 
-        // Pedro Pathing field-centric vector rotation
+        // Field-centric rotation
         double rotX = x * Math.cos(-botHeading) - y * Math.sin(-botHeading);
         double rotY = x * Math.sin(-botHeading) + y * Math.cos(-botHeading);
 
-        // Raw mecanum wheel power calculations
+        // Power calculation
         double frontLeftPower  = rotY + rotX + rx;
         double backLeftPower   = rotY - rotX + rx;
         double frontRightPower = rotY - rotX - rx;
@@ -118,14 +118,10 @@ public class Drive {
         bl.setPower(backLeftPower);
         fr.setPower(frontRightPower);
         br.setPower(backRightPower);
-
-        // Debugging power consumption
-        if (Settings.DEBUG.DRIVE.debugPowerConsumption) debugPowerConsumption(telemetry);
     }
 
     public void stop() {
         if (!enabled) return;
-
         fl.setPower(0);
         fr.setPower(0);
         br.setPower(0);
@@ -134,22 +130,21 @@ public class Drive {
 
     // Debugging
     private void debugConnection(Telemetry telemetry) {
-        telemetry.addLine(TelemetryPlus.title("DRIVE | CONNECTION"));
-        telemetry.addData("Front Left: ", fl != null);
-        telemetry.addData("Front Right: ", fr != null);
-        telemetry.addData("Back Left: ", bl != null);
-        telemetry.addData("Back Left: ", br != null);
-        telemetry.addLine(TelemetryPlus.separator());
+        telemetry.log().add(TelemetryPlus.title("DRIVE | CONNECTION"));
+        telemetry.log().add("Front Left: " + (fl != null));
+        telemetry.log().add("Front Right: " + (fr != null));
+        telemetry.log().add("Back Left: " + (bl != null));
+        telemetry.log().add("Back Left: " + (br != null));
+        telemetry.log().add(TelemetryPlus.separator());
     }
 
     private void debugPowerConsumption(Telemetry telemetry) {
-        double flC = fl.getCurrent(CurrentUnit.AMPS);
-        double frC = fr.getCurrent(CurrentUnit.AMPS);
-        double blC = bl.getCurrent(CurrentUnit.AMPS);
-        double brC = br.getCurrent(CurrentUnit.AMPS);
-
-        telemetry.addLine(TelemetryPlus.title("DRIVE POWER CONSUMPTION"));
-        telemetry.addData("Total Power: ", flC + frC + blC + brC);
-        telemetry.addLine(TelemetryPlus.separator());
+        telemetry.addData(TelemetryPlus.title("DRIVE POWER CONSUMPTION"), "").setRetained(true);
+        telemetry.addData("Total Power: ", () ->
+                fl.getCurrent(CurrentUnit.AMPS) +
+                fr.getCurrent(CurrentUnit.AMPS) +
+                bl.getCurrent(CurrentUnit.AMPS) +
+                br.getCurrent(CurrentUnit.AMPS));
+        telemetry.addData(TelemetryPlus.separator(), "").setRetained(true);
     }
 }
